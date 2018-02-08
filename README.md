@@ -1,9 +1,9 @@
 # youtube-dl-gui-simple
 
 
-Since I tended to run only one command in youtube-dl and I hated going back and forth from the browser to the terminal, I wrote this script to run a PyQt4 Gui to run a youtube browser with a download buttions which will save videos to the "~/Videos/" folder (or "~/Music/" for audio).  The Gui is intended for a linux system.
+Since I tended to run only one command in youtube-dl and I hated going back and forth from the browser to the terminal, I wrote this script to run a PyQt4 Gui to run a youtube browser with a download buttions which will save videos to the "/Videos/" folder (or "/Music/" for audio).  The Gui is intended for a linux system.
 
-NOTE: You must have the folders "~/Videos/" and "~/Music/" in your system.
+NOTE: You must have the folders "/Videos/" and "/Music/" in your system.
 
 ## Screenshot
 ![alt text](https://raw.githubusercontent.com/jman27182818/youtube-dl-gui-simple/master/Screenshot.png)
