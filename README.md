@@ -12,6 +12,7 @@ NOTE: You must have the folders "/Videos/" and "/Music/" in your system.
 ## Requirements
 * [Python 2.7.3+](https://www.python.org/downloads)
 * [PyQt4](https://www.riverbankcomputing.com/software/pyqt/download)
+* [youtube-dl](https://rg3.github.io/youtube-dl/)
 
 ## Running
 
