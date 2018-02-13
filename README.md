@@ -22,13 +22,13 @@ download and extract source files to your desired directory.  Afterward run
 
 A window will then appear with a youtube browser.  You can use the browser to navigate to your desired video.  Once you are there hit "Download" to start downloading the video to "~/Videos/".  
 
-Checking "audio only" will just save the audio to "~/Music/".  The commands used to download are
+Checking "audio only" will just save the audio to "~/Music/".  The youtube-dl commands used to download are
 
     youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --password PASSWORD -i -url 
     
 for video and:
 
-    youtube-dl --extract-audio --audio-format mp3 
+    youtube-dl -i --extract-audio --audio-format mp3 
     
 for audio.  You can change these commands by editing the source file (change "str= ...").
 
@@ -36,7 +36,7 @@ NOTE: the built in textview only tracks when the download starts and when it com
 
 ## Multiple downloads
 
-Currently only one download, or one playlist is supported.
+The program will concurrently download videos upto as many threads are available on your system.  Afterwards the videos will be queued.  To check the status click the "status" button".  When it displays "currently downloading 0 videos", then all your downloads are done.
 
 ## Creating a Launcher
 
