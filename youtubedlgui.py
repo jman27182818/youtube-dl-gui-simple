@@ -17,18 +17,15 @@ from PyQt4.QtCore import SLOT
 from PyQt4.QtCore import QThread
 from PyQt4.QtWebKit import QWebView
 from PyQt4.QtGui import QGridLayout, QLineEdit, QWidget
+from PyQt4.QtCore import QRunnable
+from PyQt4.QtCore import QThreadPool
 
-
-class system_thread(QThread):
+class system_thread(QRunnable):
     def __init__(self,command):
         QThread.__init__(self)
         self.command = command
-        self.proc = None
 
-
-    def __del__(self):
-        self.wait()
-
+    @pyqtSlot()
     def run(self):
         os.system(str(self.command))
 
@@ -56,16 +53,25 @@ class MyWindow(QWidget):
         grid.addWidget(self.downbutton,2,0)
         grid.addWidget(self.edit,3,0)
 
-        self.runthread = None
         self.isdown=False
+        self.threadpool = QThreadPool()
+
+        self.statusbutton = QPushButton("Status")
+        self.statusbutton.clicked.connect(self.checkstatus)
+        grid.addWidget(self.statusbutton,3,1)
+
+        self.urlcache = []
 
         self.setLayout(grid)
         self.setWindowTitle("Youtube Downloader")
 
+    def checkstatus(self):
+        status = "Currently Downloading "
+        status += str(self.threadpool.activeThreadCount() )
+        status += " videos"
+        self.edit.append(status)
+        
     def startdownload(self):
-        if(self.isdown):
-            self.edit.append("Currently downloading a video: Press Ctrl-C in terminal to stop prior download")
-            return
         
         self.isdown = True
         qtext = self.browser.url()
@@ -73,8 +79,13 @@ class MyWindow(QWidget):
         #bad bodge to get url
         textarray = texttot.split("'")
         text = textarray[1]
+        if text not in self.urlcache:
+            self.urlcache.append(text)
+            print(self.urlcache)
+        else:
+            return
         if(self.audiocheckbox.isChecked()):
-            strr="cd ~/Music/ && youtube-dl --extract-audio --audio-format mp3 "
+            strr="cd ~/Music/ && youtube-dl -i --extract-audio --audio-format mp3 "
         else:
             strr = "cd ~/Videos/ && youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --password PASSWORD -i -url "
 
@@ -82,9 +93,9 @@ class MyWindow(QWidget):
         strr += text
         strr += "'"
 
-        self.runthread = system_thread(strr)
-        self.connect(self.runthread,SIGNAL("finished()"),self.done)
-        self.runthread.start()
+        worker = system_thread(strr)
+        #self.connect(self.runthread,SIGNAL("finished()"),self.done)
+        self.threadpool.start(worker)
 
         self.edit.append("Download has started")
         self.edit.append("[Check status in terminal]")
